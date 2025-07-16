@@ -174,7 +174,7 @@ sudo ln -sf /usr/share/zoneinfo/Asia/Taipei /etc/localtime \
 mkdir -p ~/.local/bin
 
 # Installing essential packages...
-sudo apt update && sudo apt install -y wslu xdg-utils \
+sudo apt update && sudo apt install -y wslu xdg-utils pulseaudio \
   build-essential net-tools ripgrep jq lftp moreutils btop bat zip zstd gnupg2 \
   ffmpeg 7zip poppler-utils fd-find zoxide imagemagick exiftool
 
