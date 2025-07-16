@@ -1,6 +1,6 @@
-# 最佳 Container + Ubuntu 24.04.2 LTS 環境設定
+# 最佳 Container + Ubuntu 環境設定
 
-這份文件主要是用來快速設定 [Ubuntu 24.04.2 LTS](https://hub.docker.com/_/ubuntu/tags) 容器環境，包含了常用的工具和配置。
+這份文件主要是用來快速設定 [Ubuntu 24.04.2 LTS](https://hub.docker.com/_/ubuntu/tags) 容器環境，包含了常用的工具和設定。
 
 ## 啟動容器
 
@@ -116,7 +116,7 @@ EOF
 ```sh
 # profile setup
 cat <<'EOF' | tee -a ~/.profile
-# 針對暗色背景終端機的明亮色彩配置
+# 針對暗色背景終端機的明亮色彩設定
 export JQ_COLORS="33:93:93:96:92:97:1;97:4;97"
 
 export EDITOR=vim

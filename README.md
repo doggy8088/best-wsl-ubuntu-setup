@@ -1,10 +1,12 @@
-# 最佳 WSL + Ubuntu 22 環境設定
+# 最佳 WSL + Ubuntu 環境設定
 
-這份文件主要是用來快速設定 WSL 2 上的 Ubuntu 22 環境，包含了常用的工具和配置。
+這份文件主要是用來快速設定 [WSL](https://ubuntu.com/desktop/wsl) 上的 [Ubuntu 24.04.2 LTS](https://documentation.ubuntu.com/wsl/latest/howto/install-ubuntu-wsl2/) 發行版本，包含了常用的工具和設定。
+
+> WSL 有兩個版本，分別是 WSL 1 和 WSL 2，WSL 2 是基於虛擬機器的架構，提供更好的效能和相容性。這份文件主要針對 WSL 2 進行設定。
 
 ## 設定 Windows Terminal 終端機環境
 
-設定 WSL + Ubuntu 22 環境的第一步就是選一個好用的終端機環境，這樣可以讓你在 Windows 上更方便地使用 WSL。
+設定 WSL + Ubuntu 環境的第一步就是選一個好用的終端機環境，這樣可以讓你在 Windows 上更方便地使用 WSL。
 
 這裡我唯一推薦 [Windows Terminal](https://github.com/microsoft/terminal) 應用程式，沒有之一！✨
 
@@ -35,10 +37,9 @@ winget install --id Microsoft.WindowsTerminal -e
 
 記得在 Windows Terminal 的設定中，將「預設設定檔」的字型設定為 `JetBrainsMonoNL Nerd Font Mono` 字體。
 
-## 安裝 WSL 2 服務
+## 安裝 WSL 服務
 
 請參考微軟官網的 [How to install Linux on Windows with WSL](https://learn.microsoft.com/en-us/windows/wsl/install?WT.mc_id=DT-MVP-4015686) 文件。
-
 
 現在只要以系統管理者身份執行以下命令就可以安裝完畢：
 
@@ -253,7 +254,7 @@ cat <<'EOF' | tee -a ~/.profile
 # 這是從 WSL 取得 Windows 使用者名稱最簡單的方法
 export WINDOWS_USERNAME=$(powershell.exe '$env:UserName')
 
-# 針對暗色背景終端機的明亮色彩配置
+# 針對暗色背景終端機的明亮色彩設定
 export JQ_COLORS="33:93:93:96:92:97:1;97:4;97"
 
 export EDITOR=vim
