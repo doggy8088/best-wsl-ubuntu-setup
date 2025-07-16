@@ -410,25 +410,54 @@ github.com
 以下這個命令會將 `aichat` 最新版下載並解壓縮到 `/usr/local/bin/aichat` 路徑下：
 
 ```sh
-AIChatVersion=$(curl -s "https://api.github.com/repos/sigoden/aichat/releases/latest" | jq -r .tag_name)
-sudo bash -c "
+AIChatVersion=$(curl -s "https://api.github.com/repos/sigoden/aichat/releases/latest" | jq -r .tag_name) && \
+bash -c "
   curl -sL https://github.com/sigoden/aichat/releases/download/${AIChatVersion}/aichat-${AIChatVersion}-x86_64-unknown-linux-musl.tar.gz \
-    | tar -xzO aichat > /usr/local/bin/aichat && chmod +x /usr/local/bin/aichat
-"
-aichat -V
+    | tar -xzO aichat > ~/.local/bin/aichat && chmod +x ~/.local/bin/aichat
+" && aichat -V
 ```
 
 設定使用 Gemini 來讓 [AIChat](https://github.com/sigoden/aichat) 回答問題，你可以從 <https://ai.dev/app/apikey> 取得免費金鑰：
 
 ```sh
 cat <<'EOF' | tee -a ~/.profile
-export GEMINI_API_KEY='YOUR_GEMINI_API_KEY'
+export GEMINI_API_KEY='AIzaSyANg3xMYd7pq2iHM96kmiGTrrFVk2ug5Wo'
 export AICHAT_PLATFORM=gemini
 # 追求高品質回應，可用 gemini-2.5-pro 模型
 #export AICHAT_MODEL=gemini:gemini-2.5-pro
 # 追求高效率回應，可用 gemini-2.5-flash-lite-preview-06-17 模型
 export AICHAT_MODEL=gemini:gemini-2.5-flash-lite-preview-06-17
 EOF
+```
+
+自訂 AIChat 的角色設定，這樣可以讓 AIChat 在回答問題時更符合你的需求。
+
+```sh
+mkdir -p ~/.config/aichat/roles
+
+# 建立一個 default 角色
+cat <<'EOF' | tee ~/.config/aichat/roles/default.md > /dev/null
+As a default, provide responses in zh-tw unless specified otherwise.
+- Be concise, accurate and thorough
+- Be casual unless otherwise specified
+- All parentheses should be half-width
+- Never say quality as 質量, use 品質 instead.
+- Discuss safety only when it's crucial and non-obvious
+- Cite sources whenever possible at the end, not inline
+- Suggest solutions that I didn't think about — anticipate my needs
+- Give the answer immediately. Provide detailed explanations and restate my query in your own words if necessary after giving the answer
+- If you are asked to generate source code, the source code must not contained in ``` blocks. no explain. no suffix. just the code.
+EOF
+
+# 設定預設聊天時都用 default 角色指定的系統提示回應
+cat <<'EOF' | tee -a ~/.profile > /dev/null
+export AICHAT_CMD_PRELUDE='role:default'
+export AICHAT_REPL_PRELUDE='role:default'
+EOF
+```
+
+```sh
+source ~/.profile
 ```
 
 > 💡 完整設定可以參見 <https://github.com/sigoden/aichat/wiki/Environment-Variables>
