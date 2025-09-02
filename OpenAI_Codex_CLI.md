@@ -36,7 +36,7 @@
    codex --version
    ```
 
-   💡 目前最新版為 `0.5.0`
+   💡 目前最新版為 `0.27.0`
 
 3. 取得你的 OpenAI API Key
 
@@ -52,149 +52,99 @@
    codex 'hi'
    ```
 
-## 從原始碼建置 codex (Node.js) 工具
+## 如何設定 Azure OpenAI 金鑰給 codex (Rust) 工具使用
+
+> 💡 記得要先有 `AZURE_OPENAI_API_KEY` 環境變數，底下命令也要記得把 `YOUR-RESOURCE-NAME` 換成你的資源名稱。
 
 ```sh
-# 設定 Git 配置，避免 Windows CRLF 換行符號問題
-# 在跨平台開發時，Windows 使用 CRLF(\r\n)，而 Linux/Mac 使用 LF(\n)
-# 設定為 input 可確保檔案在儲存時統一使用 LF 換行符號
-echo "📝 設定 Git 換行符號處理方式..."
-git config --global core.autocrlf input
+mkdir -p ~/.codex
 
-# 切換到使用者主目錄並建立專案資料夾
-# ~ 代表使用者的主目錄 (home directory)
-echo "📁 建立專案目錄結構..."
-cd ~/
-mkdir projects; cd projects
+cat <<'EOF' | tee ~/.codex/config.toml > /dev/null
+approval_policy = "on-failure"
+sandbox_mode = "workspace-write"
+model_reasoning_effort = "high"
+model_reasoning_summary = "detailed"
 
-# 從 GitHub 克隆 OpenAI Codex 儲存庫
-# 這會下載完整的專案原始碼到本地端
-echo "⬇️ 下載 OpenAI Codex 原始碼..."
-git clone https://github.com/openai/codex.git
-cd codex
+model_provider = "azure"
+model          = "codex-mini"
 
-# 鎖定版本在 Jul 12, 2025 的最新版 Commit 上
-git checkout bfeb8c92a591e8f20ecabb2a1b5a22e1574e7951
+[model_providers.azure]
+name         = "Azure OpenAI"
+base_url     = "https://duotify-ai-coding-agent.openai.azure.com/openai"
+env_key      = "AZURE_OPENAI_API_KEY"
+wire_api     = "responses"
+query_params = { api-version = "2025-04-01-preview" }
 
-cd codex-cli
+[profiles.azure_gpt5]
+model_provider = "azure"
+model = "gpt-5"
+# Optional: prefer API key auth over ChatGPT login
+preferred_auth_method = "apikey"
+model_reasoning_effort = "high"
+model_reasoning_summary = "detailed"
 
-# 獲取並套用社群貢獻的 Pull Request 修正
-# 這些是 Will 保哥提交的重要修正
-# https://github.com/openai/codex/pulls/doggy8088
-echo "🔧 套用社群修正補丁..."
-git fetch origin '+refs/pull/*/head:refs/remotes/origin/pr/*'
-echo "   - 套用 PR #1004 修正...日誌檔名不應使用冒號字元"
-git cherry-pick origin/pr/1004
-echo "   - 套用 PR #1121 修正...codex -v <rollout> 無法正常運作"
-git cherry-pick origin/pr/1121
-echo "   - 套用 PR #1125 修正...如果使用者已明確標記環境已足夠鎖定，則允許在沒有沙盒的情況下執行。"
-git cherry-pick origin/pr/1125
-echo "   - 套用 PR #1130 修正...在文件中闡明專案文件發現與合併的邏輯"
-git cherry-pick origin/pr/1130
-echo "   - 套用 PR #1134 修正...為 codex 新增完整的 bash 自動完成功能"
-git cherry-pick origin/pr/1134
-echo "   - 套用 PR #1143 修正...修正 yq 不需要 -o=json 參數"
-git cherry-pick origin/pr/1143
+[model_providers.groq]
+name         = "Groq"
+base_url     = "https://api.groq.com/openai/v1"
+env_key      = "GROQ_API_KEY"
+wire_api     = "chat"
+query_params = {}
 
-# 啟用 Node.js Corepack 套件管理器
-# Corepack 允許使用不同的套件管理器 (如 pnpm, yarn) 而不需要全域安裝
-echo "⚙️ 啟用 Node.js Corepack..."
-corepack enable
+# The Groq API doesn't support `prompt_cache_key` yet.
+# https://console.groq.com/docs/responses-api#unsupported-features
+#wire_api     = "responses"
 
-# 設定 pnpm 套件管理器
-echo "📦 設定 pnpm 套件管理器..."
-yes | pnpm setup
-
-# 套用 pnpm 套件管理器的環境變數
-echo "📦 套用 pnpm 套件管理器的環境變數..."
-source ~/.bashrc
-
-# 安裝專案相依套件並進行建置
-echo "📦 安裝專案相依套件..."
-pnpm install
-
-echo "🔨 編譯專案..."
-pnpm build
-
-# 僅限 Linux 系統：下載預建的沙盒執行檔案
-# 這些檔案用於安全地執行程式碼，需要 gh (GitHub CLI) 和 zstd 工具
-echo "🛡️ 安裝沙盒執行環境 (僅限 Linux) ..."
-./scripts/install_native_deps.sh
-
-# 顯示 CLI 工具的使用說明和選項
-echo "📖 顯示使用說明..."
-node ./dist/cli.js --help
-
-# 直接執行本地建置的 CLI 工具
-echo "🚀 測試執行 Codex CLI..."
-node ./dist/cli.js
-
-# 將 CLI 工具連結到全域環境，方便在任何地方使用
-echo "🌐 安裝到全域環境..."
-pnpm link --global
-
-# 驗證安裝版本 (0.0.0-dev)
-echo "✅ 驗證安裝版本... 注意: 自行建置的版本為 0.0.0-dev"
-codex --version
-
-# 設定 Bash 命令自動完成功能
-# 這讓您可以使用 Tab 鍵自動完成 codex 命令
-echo "⌨️ 設定命令自動完成..."
-codex completion bash | sudo tee /etc/bash_completion.d/codex
-source ~/.bashrc
-
-echo "🎉 本地 OpenAI Codex CLI 安裝完成！"
-```
-
-## 如何設定 Azure OpenAI 金鑰給 codex (Node.js) 工具使用
-
-由於 OpenAI 發佈到 npm registry 的 Codex CLI 一直都不支援 Azure OpenAI Service，每次都必須要從原始碼建置實在是太麻煩了，所以我自己發佈了一版沒問題的，安裝方式如下：
-
-```sh
-npm i -g @willh/codex
-```
-
-基本上，要支援 Azure OpenAI Service 只需要設定兩個環境變數到 `~/.profile` 即可：
-
-```sh
-cat <<'EOF' | tee -a ~/.profile > /dev/null
-# Azure OpenAI Service
-export AZURE_BASE_URL="https://YOUR-RESOURCE-NAME.openai.azure.com/openai"
-export AZURE_OPENAI_API_KEY='YOUR-API-KEY'
-
-export CODEX_UNSAFE_ALLOW_NO_SANDBOX=1
-export CODEX_SANDBOX_NETWORK_DISABLED=0
-EOF
-
-source ~/.profile
-```
-
-接著直接執行就可以了：
-
-```sh
-codex -p azure -m codex-mini
-```
-
-> 💡 注意: 這裡的 `-m` 是 Azure OpenAI Service 的 Deployment name，並非是模型名稱，但建立 Deployment 的時候，模型一定要選擇 `o4-mini` 或 `codex-mini` 才可以！
-
-如果常用的話，是可以調整 Codex CLI 設定檔 ( `~/.codex/config.json` ) 將 `azure` 提供者設定為預設值：
-
-```json
-cat <<'EOF' | tee ~/.codex/config.json > /dev/null
-{
-   "model": "codex-mini",
-   "provider": "azure"
-}
+[profiles.groq_gptoss]
+model_provider = "groq"
+model = "openai/gpt-oss-120b"
+# Optional: prefer API key auth over ChatGPT login
+preferred_auth_method = "apikey"
+model_reasoning_effort = "high"
+model_reasoning_summary = "detailed"
 EOF
 ```
 
-設定好之後，啟動時就比較簡單，預設就是使用 `azure` 提供者與 `codex-mini` 模型：
+自訂 Profile 的使用方式：
 
 ```sh
-codex
+codex -p azure_gpt5
 ```
 
-💡 注意: 透過 [Azure OpenAI Responses API](https://learn.microsoft.com/en-us/azure/ai-foundry/openai/how-to/responses?WT.mc_id=DT-MVP-4015686&tabs=rest-api) 就只有 `o4-mini` 與 `codex-mini` 模型可以設定！
+## 順利連接 Azure OpenAI Service 的技巧
+
+目前的 Codex CLI 有兩個預先編譯好的 Linux 版本：
+
+1. musl 版本
+
+   若用 `npm install -g @openai/codex` 安裝，預設就是安裝這個。
+
+   這個版本無法解析 Azure OpenAI Service 的 API 端點網址，所以永遠連不上。
+
+   連不上 AOAI 的原因我有做過[深度分析](https://github.com/openai/codex/issues/1552)，問題出在 Codex CLI 預設的 musl 版本無法解析 `*.openai.azure.com` 域名造成的。
+
+2. GNU 版本
+
+   需從 [Releases](https://github.com/openai/codex/releases) 頁面手動下載。
+
+   這個版本可以正確解析 Azure OpenAI Service 的 API 端點網址，唯有這個版本才能正常運作，但必須用 Ubuntu 24.04 LTS 以上版本才能跑。
+
+   透過 Ubuntu 22.04 LTS 是無法執行的，因為 GLIBC 版本太久導致。
+
+如果 Codex CLI 要使用 Azure OpenAI Services (AOAI) 的端點與金鑰，有以下兩種方法：
+
+1. 參考下一個小節，從原始碼開始建置 `codex` 程式才能用。
+
+2. 手動添加 DNS/IP 對應到 `/etc/hosts` 檔案中
+
+    避免 DNS 解析也可以解決無法連線的問題，這是我研究好幾天才得出的應變措施！
+
+    假設你的 AOAI 的資源名稱為 `duotify-coding-agent.openai.azure.com` 的話，就執行以下指令即可設定完成：
+
+    ```sh
+    DOMAIN="duotify-coding-agent.openai.azure.com"; sudo sed -i "/$DOMAIN/d" /etc/hosts && ip=$(dig +short $DOMAIN | grep -v '^$' | tail -n1) && [ -n "$ip" ] && echo "$ip $DOMAIN" | sudo tee -a /etc/hosts
+    ```
+
+這種安裝方法可以順利使用 Azure OpenAI Service 服務！
 
 ## 從原始碼建置 codex (Rust) 工具
 
@@ -229,72 +179,9 @@ cargo test
 cargo install --path cli
 ```
 
-## 如何設定 Azure OpenAI 金鑰給 codex (Rust) 工具使用
-
-> 💡 記得要先有 `AZURE_OPENAI_API_KEY` 環境變數，底下命令也要記得把 `YOUR-RESOURCE-NAME` 換成你的資源名稱。
-
-```sh
-mkdir -p ~/.codex
-
-cat <<'EOF' | tee ~/.codex/config.toml > /dev/null
-approval_policy = "on-failure"
-sandbox_mode = "workspace-write"
-model_reasoning_effort = "high"
-model_reasoning_summary = "detailed"
-
-model_provider = "azure"
-model          = "codex-mini"            # pick whatever you want as your day-to-day default
-
-[model_providers.azure]
-name         = "Azure OpenAI"
-base_url     = "https://YOUR-RESOURCE-NAME.openai.azure.com/openai"
-env_key      = "AZURE_OPENAI_API_KEY"
-wire_api     = "responses"                   
-query_params = { api-version = "2025-04-01-preview" }
-
-# ----------  one profile per model  ----------
-[profiles.o3]
-model_provider = "azure"
-model          = "o3"
-
-[profiles.o3-pro]
-model_provider = "azure"
-model          = "o3-pro"
-
-[profiles.o4-mini]
-model_provider = "azure"
-model          = "o4-mini"
-
-[profiles.codex-mini]
-model_provider = "azure"
-model          = "codex-mini"
-
-[profiles.gpt-4.1]
-model_provider = "azure"
-model          = "gpt-4.1"
-
-[profiles.model-router]
-model_provider = "azure"
-model          = "model-router"
-EOF
-```
-
-## 直接下載 Linux Binary 版本安裝 Codex CLI (Rust)
-
-這種安裝方法可以順利使用 Azure OpenAI Service 服務！
-
-```sh
-# 安裝 Codex CLI (Rust)
-curl -o- -sL https://github.com/openai/codex/releases/download/$(curl -s "https://api.github.com/repos/openai/codex/releases/latest" | jq -r .tag_name)/codex-x86_64-unknown-linux-gnu.tar.gz | tar -xzf - --transform='s/codex-x86_64-unknown-linux-gnu/codex/' -C ~/.local/bin
-```
-
-```sh
-codex --version
-```
-
 ## 使用 DotSlash 安裝 Codex CLI (Rust) 版本
 
-目前這種安裝方法無法使用 Azure OpenAI Service 服務！[尚待釐清問題](https://github.com/openai/codex/issues/1552)！
+這種安裝方式必須先有 [DotSlash](https://dotslash-cli.com/) 才能執行程式：
 
 ```sh
 # 安裝 Codex CLI (Rust)
