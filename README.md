@@ -79,10 +79,10 @@ OracleLinux_8_7                 Oracle Linux 8.7
 OracleLinux_9_1                 Oracle Linux 9.1
 ```
 
-安裝 Ubuntu-24.04 LTS 發行版本：
+安裝 Ubuntu-22.04 LTS 發行版本：
 
 ```sh
-wsl --install -d Ubuntu-24.04
+wsl --install -d Ubuntu-22.04
 ```
 
 查看目前正在運作的 Linux 發行版本：
@@ -100,13 +100,13 @@ wsl --update
 設定預設 `wsl.exe` 啟用的 Linux 發行版本：
 
 ```sh
-wsl --set-default Ubuntu-24.04
+wsl --set-default Ubuntu-22.04
 ```
 
-若要移除 `Ubuntu-24.04` 發行版本，可以使用以下命令：
+若要移除 `Ubuntu-22.04` 發行版本，可以使用以下命令：
 
 ```sh
-wsl --unregister Ubuntu-24.04
+wsl --unregister Ubuntu-22.04
 ```
 
 ## 設定 Linux 使用者名稱和密碼
