@@ -351,8 +351,11 @@ git config --global init.defaultBranch main
 如果您打算使用 Azure Repos 或 Azure DevOps，則需要進行一些額外的設定，以下命令可以讓你在 WSL 直接跟 Windows 共用同一個 [Git Credential Manager (GCM)](https://github.com/GitCredentialManager/git-credential-manager)：
 
 ```sh
+git config --global credential.helper "/mnt/c/PROGRA~1/Git/mingw64/bin/git-credential-manager.exe"
 git config --global credential.https://dev.azure.com.useHttpPath true
 ```
+
+> 相關文章: [如何使用 Git Credential Manager 快速清除 Azure Repos 使用者認證快取](https://blog.miniasp.com/post/2022/05/18/Clear-Azure-Repos-Authority-Cache-using-Git-Credential-Manager)
 
 ### 設定 Vim 編輯器
 
