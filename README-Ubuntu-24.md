@@ -138,7 +138,7 @@ passwd <username>
 echo "will ALL=(ALL:ALL) NOPASSWD:ALL" | sudo tee /etc/sudoers.d/will
 ```
 
-請記得將上述命令的 `will` 置換成你手冊登入 WSL 時註冊的帳號，如果你的帳號叫 `david` 的話，命令就是：
+請記得將上述命令的 `will` 置換成你首次登入 WSL 時註冊的帳號，如果你的帳號叫 `david` 的話，命令就是：
 
 ```sh
 echo "david ALL=(ALL:ALL) NOPASSWD:ALL" | sudo tee /etc/sudoers.d/david
