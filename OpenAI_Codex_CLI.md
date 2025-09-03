@@ -36,7 +36,7 @@
    codex --version
    ```
 
-   💡 目前最新版為 `0.27.0`
+   💡 目前最新版為 `0.28.0`
 
 3. 取得你的 OpenAI API Key
 
@@ -52,7 +52,7 @@
    codex 'hi'
    ```
 
-## 如何設定 Azure OpenAI 金鑰給 codex (Rust) 工具使用
+## 如何設定 Azure OpenAI 金鑰給 codex 工具使用
 
 > 💡 記得要先有 `AZURE_OPENAI_API_KEY` 環境變數，底下命令也要記得把 `YOUR-RESOURCE-NAME` 換成你的資源名稱。
 
@@ -146,7 +146,7 @@ codex -p azure_gpt5
 
 這種安裝方法可以順利使用 Azure OpenAI Service 服務！
 
-## 從原始碼建置 codex (Rust) 工具
+## 從原始碼建置 codex 工具
 
 ```sh
 # 安裝必要的建置工具
@@ -179,12 +179,30 @@ cargo test
 cargo install --path cli
 ```
 
-## 使用 DotSlash 安裝 Codex CLI (Rust) 版本
+如果要更新到 Repo 的最新版，可以在 `git pull` 之後到 `codex-rs` 資料夾執行以下命令：
+
+```sh
+cargo install --path cli
+```
+
+你可以用以下命令列出已安裝的套件：
+
+```sh
+cargo install --list
+```
+
+你可以用以下命令移除已安裝的套件：
+
+```sh
+cargo uninstall codex-cli
+```
+
+## 使用 DotSlash 安裝 Codex CLI 版本
 
 這種安裝方式必須先有 [DotSlash](https://dotslash-cli.com/) 才能執行程式：
 
 ```sh
-# 安裝 Codex CLI (Rust)
+# 安裝 Codex CLI
 curl -sSL "https://github.com/openai/codex/releases/download/$(curl -s "https://api.github.com/repos/openai/codex/releases/latest" | jq -r .tag_name)/codex" -o ~/.local/bin/codex \
   && chmod +x ~/.local/bin/codex
 ```
