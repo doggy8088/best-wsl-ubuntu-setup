@@ -659,6 +659,90 @@ gcloud init
 
     可以參考 [如何移除 Docker Desktop 並在 Windows 與 WSL 2 改安裝 Docker Engine](https://blog.miniasp.com/post/2025/06/14/How-to-remove-Docker-Desktop-and-install-Docker-Engine-on-Windows-with-WSL-2)
 
+## 純 Linux Ubuntu 字型安裝指南
+
+如果你使用的是純 Linux Ubuntu 環境（非 WSL），也可以安裝相同的 JetBrains Mono Nerd Font 字型來獲得最佳的終端機體驗。
+
+### 下載字型檔案
+
+首先，請到 [Nerd Fonts - Iconic font aggregator, glyphs/icons collection, & fonts patcher](https://www.nerdfonts.com/font-downloads) 下載名為 `JetBrainsMono Nerd Font` 的字型檔案。
+
+解壓縮後，你只需要以下這四個字型檔案：
+
+1. `JetBrainsMonoNLNerdFontMono-Bold.ttf`
+2. `JetBrainsMonoNLNerdFontMono-BoldItalic.ttf`
+3. `JetBrainsMonoNLNerdFontMono-Light.ttf`
+4. `JetBrainsMonoNLNerdFontMono-Regular.ttf`
+
+### 安裝字型到系統
+
+在純 Linux Ubuntu 環境中，需要正確安裝字型才能確保所有符號都能正常顯示：
+
+```bash
+# 確保已安裝 fontconfig 套件
+sudo apt update && sudo apt install -y fontconfig
+
+# 建立系統字型目錄（如果不存在）
+sudo mkdir -p /usr/local/share/fonts
+
+# 複製字型檔案到系統字型目錄
+sudo cp JetBrainsMonoNLNerdFontMono-*.ttf /usr/local/share/fonts/
+
+# 設定正確的檔案權限
+sudo chmod 644 /usr/local/share/fonts/JetBrainsMonoNLNerdFontMono-*.ttf
+
+# 更新字型快取（這個步驟非常重要！）
+sudo fc-cache -fv
+
+# 驗證字型是否已正確安裝
+fc-list | grep -i jetbrains
+```
+
+### 設定終端機使用新字型
+
+安裝完成後，需要在你的終端機應用程式中設定使用 `JetBrainsMonoNL Nerd Font Mono` 字型：
+
+- **GNOME Terminal**: 編輯 → 偏好設定 → 設定檔 → 文字 → 自訂字型
+- **Konsole**: 設定 → 編輯目前設定檔 → 外觀 → 字型
+- **Terminator**: 右鍵選單 → 偏好設定 → 設定檔 → 一般 → 字型
+- **Alacritty**: 編輯 `~/.config/alacritty/alacritty.yml` 設定檔案
+
+### 疑難排解
+
+如果安裝後仍有符號顯示問題，請嘗試以下解決方案：
+
+1. **重新啟動終端機應用程式**：字型變更可能需要重新啟動應用程式才會生效。
+
+2. **確認字型名稱**：使用以下命令確認字型的正確名稱：
+   ```bash
+   fc-list | grep -i jetbrains | head -5
+   ```
+
+3. **清除字型快取並重建**：
+   ```bash
+   sudo fc-cache -r
+   sudo fc-cache -fv
+   ```
+
+4. **檢查字型檔案完整性**：確保下載的字型檔案沒有損壞：
+   ```bash
+   file /usr/local/share/fonts/JetBrainsMonoNLNerdFontMono-*.ttf
+   ```
+
+5. **使用者層級安裝**：如果系統層級安裝有問題，可以嘗試安裝到使用者目錄：
+   ```bash
+   mkdir -p ~/.local/share/fonts
+   cp JetBrainsMonoNLNerdFontMono-*.ttf ~/.local/share/fonts/
+   fc-cache -fv ~/.local/share/fonts
+   ```
+
+6. **確認 Nerd Fonts 符號支援**：安裝完成後可以測試一些常見的 Nerd Fonts 符號是否正確顯示：
+   ```bash
+   echo -e "\ue0b0 \uf011 \uf07c \uf15b \uf1b6 \uf40e"
+   ```
+
+安裝完成後，你就能在純 Linux Ubuntu 環境中享受到與 WSL 相同的美觀字型體驗！
+
 ## 相關連結
 
 - The Will Will Web (保哥的部落格)
