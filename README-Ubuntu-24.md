@@ -342,16 +342,19 @@ source ~/.bashrc
 ```sh
 # git setup
 npx -y @willh/git-setup --name 'Your Name' --email username@gmail.com
-git config --global core.autocrlf input
-git config --global init.defaultBranch main
 ```
 
 > 💡 這個 [@willh/git-setup](https://www.npmjs.com/package/@willh/git-setup) 是我多年前開發的小工具，換新電腦的時候很實用，支援跨平臺自動設定 Git 常見參數。
 
-如果您打算使用 Azure Repos 或 Azure DevOps，則需要進行一些額外的設定，以下命令可以讓你在 WSL 直接跟 Windows 共用同一個 [Git Credential Manager (GCM)](https://github.com/GitCredentialManager/git-credential-manager)：
+以下命令可以讓你在 WSL 直接跟 Windows 共用同一個 [Git Credential Manager (GCM)](https://github.com/GitCredentialManager/git-credential-manager) 來管理認證：
 
 ```sh
 git config --global credential.helper "/mnt/c/PROGRA~1/Git/mingw64/bin/git-credential-manager.exe"
+```
+
+如果您打算使用 Azure Repos 或 Azure DevOps，則需要進行一些額外的設定，以確保在多個不同 Azure DevOps 組織下的 Azure Repos 可以使用不同的使用者認證：
+
+```sh
 git config --global credential.https://dev.azure.com.useHttpPath true
 ```
 
