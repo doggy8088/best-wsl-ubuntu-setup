@@ -198,7 +198,7 @@ codex -p azure_gpt5
 
    這個版本可以正確解析 Azure OpenAI Service 的 API 端點網址，唯有這個版本才能正常運作，但必須用 Ubuntu 24.04 LTS 以上版本才能跑。
 
-   透過 Ubuntu 22.04 LTS 是無法執行的，因為 GLIBC 版本太久導致。
+   透過 Ubuntu 22.04 LTS 是無法執行的，因為 GLIBC 版本太舊導致。
 
 如果 Codex CLI 要使用 Azure OpenAI Services (AOAI) 的端點與金鑰，有以下兩種方法：
 
@@ -283,4 +283,5 @@ curl -sSL "https://github.com/openai/codex/releases/download/$(curl -s "https://
 - [Securely Turbo‑Charge Your Software Delivery with Codex Coding Agent on Azure OpenAI | All things Azure](https://devblogs.microsoft.com/all-things-azure/securely-turbo%E2%80%91charge-your-software-delivery-with-the-codex-coding-agent-on-azure-openai/)
 - [Developing inside a Container](https://code.visualstudio.com/docs/devcontainers/containers)
 - [Development Containers](https://containers.dev/)
+
 
