@@ -54,6 +54,16 @@
    codex 'hi'
    ```
 
+5. 加入 Bash 自動完成設定
+
+   ```sh
+   cat <<'EOF' | tee -a ~/.bashrc
+   eval "$(codex completion bash)"
+   EOF
+   ```
+
+   > 設定完之後要重新登入 Linux
+
 以下是安裝的每個套件的詳細說明：
 
 - **aggregate**

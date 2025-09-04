@@ -282,6 +282,11 @@ shopt -u direxpand
 shopt -s no_empty_cmd_completion
 EOF
 
+# inputrc setup
+cat <<'EOF' | tee -a ~/.inputrc
+set bell-style none
+EOF
+
 # ssh setup
 ssh-keygen -t rsa -b 4096 -f $HOME/.ssh/id_rsa -P ""
 touch ~/.ssh/authorized_keys
@@ -524,6 +529,14 @@ curl -v -L 'http://localhost:1455/success?xxxxxxplatform.openai.com'
     ```sh
     DOMAIN="coding-agent.openai.azure.com"; sudo sed -i "/$DOMAIN/d" /etc/hosts && ip=$(dig +short $DOMAIN | grep -v '^$' | tail -n1) && [ -n "$ip" ] && echo "$ip $DOMAIN" | sudo tee -a /etc/hosts
     ```
+
+加入 Bash 自動完成設定
+
+```sh
+cat <<'EOF' | tee -a ~/.bashrc
+eval "$(codex completion bash)"
+EOF
+```
 
 ### 安裝 [Gemini CLI](https://github.com/google-gemini/gemini-cli/) 程式設計代理人工具
 
