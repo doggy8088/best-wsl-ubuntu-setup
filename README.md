@@ -610,6 +610,16 @@ gcloud init
 
     可以參考 [如何移除 Docker Desktop 並在 Windows 與 WSL 2 改安裝 Docker Engine](https://blog.miniasp.com/post/2025/06/14/How-to-remove-Docker-Desktop-and-install-Docker-Engine-on-Windows-with-WSL-2)
 
+2. 安裝 .NET SDK
+
+    建議參考 [Install .NET SDK or .NET Runtime on Ubuntu](https://learn.microsoft.com/en-us/dotnet/core/install/linux-ubuntu-install) 文件進行安裝即可。
+
+    ```sh
+    sudo add-apt-repository ppa:dotnet/backports
+    sudo apt-get update && sudo apt-get install -y dotnet-sdk-8.0
+    sudo apt-get install -y dotnet-sdk-9.0
+    ```
+
 ## 相關連結
 
 - The Will Will Web (保哥的部落格)

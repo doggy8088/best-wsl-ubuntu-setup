@@ -399,3 +399,13 @@ curl -sSL https://sdk.cloud.google.com | bash
 source  ~/.bashrc
 gcloud init
 ```
+
+### 安裝 .NET SDK
+
+建議參考 [Install .NET SDK or .NET Runtime on Ubuntu](https://learn.microsoft.com/en-us/dotnet/core/install/linux-ubuntu-install) 文件進行安裝即可。
+
+```sh
+sudo add-apt-repository ppa:dotnet/backports
+sudo apt-get update && sudo apt-get install -y dotnet-sdk-8.0
+sudo apt-get install -y dotnet-sdk-9.0
+```
