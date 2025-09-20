@@ -1,5 +1,5 @@
 # OpenAI Codex CLI 環境建置說明
-
+## 資料來源：https://github.com/doggy8088/best-wsl-ubuntu-setup/wiki/OpenAI-Codex-CLI-%E9%96%8B%E7%99%BC%E7%92%B0%E5%A2%83%E5%BB%BA%E7%BD%AE%E8%AA%AA%E6%98%8E
 ## 打造容器開發環境說明
 
 1. 安裝容器開發環境的相關工具
@@ -293,5 +293,6 @@ curl -sSL "https://github.com/openai/codex/releases/download/$(curl -s "https://
 - [Securely Turbo‑Charge Your Software Delivery with Codex Coding Agent on Azure OpenAI | All things Azure](https://devblogs.microsoft.com/all-things-azure/securely-turbo%E2%80%91charge-your-software-delivery-with-the-codex-coding-agent-on-azure-openai/)
 - [Developing inside a Container](https://code.visualstudio.com/docs/devcontainers/containers)
 - [Development Containers](https://containers.dev/)
+
 
 
