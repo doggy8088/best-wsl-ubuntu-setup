@@ -167,8 +167,13 @@ source ~/.bashrc
 這是一個非常強大的命令列模糊搜尋工具，可以讓你在終端機中快速找到檔案或目錄。
 
 ```sh
+# 安裝最新版
 git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 ~/.fzf/install --all
+
+# 設定按下 Ctrl-R 的時候，可以用 Tab 鍵來選取搜尋到的命令
+echo "export FZF_CTRL_R_OPTS='--bind=tab:accept'" | tee -a ~/.bashrc
+
 source ~/.bashrc
 ```
 

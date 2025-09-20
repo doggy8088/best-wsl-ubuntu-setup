@@ -317,6 +317,9 @@ sudo apt remove fzf
 git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 ~/.fzf/install --all
 
+# 設定按下 Ctrl-R 的時候，可以用 Tab 鍵來選取搜尋到的命令
+echo "export FZF_CTRL_R_OPTS='--bind=tab:accept'" | tee -a ~/.bashrc
+
 source ~/.bashrc
 ```
 
