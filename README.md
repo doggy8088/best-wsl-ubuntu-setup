@@ -364,6 +364,22 @@ function! XTermPasteBegin()
   set paste
   return ""
 endfunction
+
+" 讓 .log 視為特定語言（例如 message / syslog）
+augroup LogSyntax
+  autocmd!
+  autocmd BufNewFile,BufRead *.log setlocal filetype=messages
+augroup END
+
+augroup LogHighlight
+  autocmd!
+  autocmd FileType messages syntax match LogError "ERROR"
+  autocmd FileType messages syntax match LogWarn  "WARN"
+  autocmd FileType messages syntax match LogInfo  "INFO"
+  autocmd FileType messages highlight LogError ctermfg=Red
+  autocmd FileType messages highlight LogWarn  ctermfg=Yellow
+  autocmd FileType messages highlight LogInfo  ctermfg=Cyan
+augroup END
 EOF
 
 # Copy vimrc to root
