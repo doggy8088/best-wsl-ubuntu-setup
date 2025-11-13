@@ -280,6 +280,22 @@ github.com
   - Token scopes: 'gist', 'read:org', 'repo', 'workflow'
 ```
 
+### 安裝 [GitHub Copilot CLI](https://github.com/github/copilot-cli/) 程式設計代理人工具
+
+```sh
+# 安裝 Copilt CLI (Node.js)
+npm install -g @github/copilot
+
+# 查看版本
+copilot -v
+```
+
+基本上 GitHub CLI 已經登入的話，GitHub Copilot CLI 也會自動共用登入狀態，所以你只要執行以下命令就可以了：
+
+```sh
+copilot
+```
+
 ### 安裝 [AIChat](https://github.com/sigoden/aichat) 工具
 
 [AIChat: All-in-one LLM CLI Tool](https://github.com/sigoden/aichat) 是一個多合一的 LLM CLI 工具，具有 Shell 助理、CMD & REPL 模式、RAG、AI 工具與代理等功能，讓你再也不必記憶指令。
