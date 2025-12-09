@@ -208,6 +208,22 @@ source ~/.profile
 - [jq](https://jqlang.org/)：輕量且彈性的命令列 JSON 處理器
 - [yq](https://github.com/mikefarah/yq)：可處理 YAML/JSON/INI/XML 的命令列解析器
 
+### 安裝 [better-rm](https://github.com/doggy8088/better-rm) 工具
+
+這是一個更安全的 `rm` 命令替代方案，主要目的是防止誤刪重要檔案與目錄。與傳統的 `rm` 命令不同，`better-rm` 不會永久刪除檔案，而是將它們移至垃圾桶目錄(預設為 `~/.Trash`)，方便事後還原。
+
+```sh
+# 快速安裝 better-rm
+curl -sSL https://raw.githubusercontent.com/doggy8088/better-rm/main/install.sh | bash
+
+source ~/.bashrc
+
+# 驗證安裝
+rm --version
+```
+
+> 💡 如果需要使用系統原生的 `rm` 命令，可以使用完整路徑 `/bin/rm` 或用反斜線 `\rm`。
+
 ### 安裝 Rust 編譯環境
 
 安裝 Rust 編譯環境非必要安裝，但你如果有需要就可以裝。
