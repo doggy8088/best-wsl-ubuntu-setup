@@ -213,7 +213,7 @@ source ~/.profile
 這是一個更安全的 `rm` 命令替代方案，主要目的是防止誤刪重要檔案與目錄。與傳統的 `rm` 命令不同，`better-rm` 不會永久刪除檔案，而是將它們移至垃圾桶目錄(預設為 `~/.Trash`)，方便事後還原。
 
 ```sh
-# 快速安裝 better-rm（推薦）
+# 快速安裝 better-rm
 curl -sSL https://raw.githubusercontent.com/doggy8088/better-rm/main/install.sh | bash
 
 source ~/.bashrc
