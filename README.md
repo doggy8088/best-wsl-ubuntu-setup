@@ -232,6 +232,22 @@ source ~/.profile
 - [yq](https://github.com/mikefarah/yq)：可處理 YAML/JSON/INI/XML 的命令列解析器
 - [bat](https://github.com/sharkdp/bat)：一個具有語法高亮和 Git 整合的 `cat` 替代命令
 
+### 安裝 [better-rm](https://github.com/doggy8088/better-rm) 工具
+
+這是一個更安全的 `rm` 命令替代方案，主要目的是防止誤刪重要檔案與目錄。與傳統的 `rm` 命令不同，`better-rm` 不會永久刪除檔案，而是將它們移至垃圾桶。
+
+```sh
+# 快速安裝 better-rm（推薦）
+curl -sSL https://raw.githubusercontent.com/doggy8088/better-rm/main/install.sh | bash
+
+source ~/.bashrc
+
+# 驗證安裝
+rm --version
+```
+
+> 💡 如果需要使用系統原生的 `rm` 命令，可以使用完整路徑 `/bin/rm` 或用反斜線 `\rm`。
+
 ### 設定 Node.js 環境
 
 我會建議用 [nvm](https://github.com/nvm-sh/nvm) (Node Version Manager) 來管理 Node.js 的版本，這樣可以方便地切換不同的 Node.js 版本，真的可以減少很多麻煩事。
